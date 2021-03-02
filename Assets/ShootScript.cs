@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ShootScript : MonoBehaviour
 {
-
+    public GameObject[] allWeps; 
+    public GameObject CurrentWep;
     public int GunDamage = 1;
     public float FireRate = 0.05f;
     public float Range = 50f;
@@ -19,8 +20,16 @@ public class ShootScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        allWeps = GameObject.FindGameObjectsWithTag("Weapon");
+        foreach (GameObject weps in allWeps) {
+            weps.SetActive(false);
+        }
+        allWeps[0].SetActive(true);
         LaserLine = GetComponent<LineRenderer>();
         fpsCamera = GetComponentInChildren<Camera>();
+        CurrentWep = allWeps[0];
+        GetWepStats(CurrentWep);
+        startpoint = GameObject.Find("FirePoint");
     }
 
     // Update is called once per frame
@@ -46,6 +55,14 @@ public class ShootScript : MonoBehaviour
                 LaserLine.SetPosition(1, rayorigin + (fpsCamera.transform.forward * Range));
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SwapWeapon(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            SwapWeapon(2);
+        }
     }
 
     private IEnumerator ShotEffect() {
@@ -53,7 +70,35 @@ public class ShootScript : MonoBehaviour
         yield return ShotDuration;
         LaserLine.enabled = false;
     }
-   
+
+    private void SwapWeapon(int WepNumber) {
+        GameObject temp = CurrentWep;
+        switch (WepNumber) {
+            case 1:
+                CurrentWep.SetActive(false);
+                CurrentWep = allWeps[0];
+                CurrentWep.SetActive(true);
+                GetWepStats(CurrentWep);
+                break;
+            case 2:
+                CurrentWep.SetActive(false);
+                CurrentWep = allWeps[1];
+                CurrentWep.SetActive(true);
+                GetWepStats(CurrentWep);
+                break;
+            default:
+                Debug.Log("Switch Statment Failed");
+                break;
+        }
+        startpoint = GameObject.Find("FirePoint");
+    }
+    private void GetWepStats(GameObject WepPrefab) {
+       GunDamage = WepPrefab.GetComponent<GunStats>().GunDamage;
+        Range = WepPrefab.GetComponent<GunStats>().Range;
+        FireRate = WepPrefab.GetComponent<GunStats>().FireRate;
+        Hitforce = WepPrefab.GetComponent<GunStats>().Hitforce;
+
+    }
 
    
 }
