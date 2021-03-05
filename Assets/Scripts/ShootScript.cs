@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class ShootScript : MonoBehaviour
 {
+    public GameObject Player;
     public GameObject[] allWeps; 
     public GameObject CurrentWep;
     public int GunDamage = 1;
     public float FireRate = 0.05f;
     public float Range = 50f;
     public float Hitforce = 100f;
+    private Vector3 originalPos;
+    private Vector3 aimingPos;
+    private float AdsSpeed;
 
     public Camera fpsCamera;
     public WaitForSeconds ShotDuration = new WaitForSeconds(0.05f);
     public GameObject startpoint;
     public LineRenderer LaserLine;
     public float nextFire;
+
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +42,20 @@ public class ShootScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        while (Input.GetButtonDown("Fire1") && Time.time > nextFire) {
+
+        //ADS
+        if (Input.GetMouseButton(1))
+        {
+
+            CurrentWep.transform.localPosition = Vector3.Lerp(CurrentWep.transform.localPosition, aimingPos, Time.deltaTime * AdsSpeed);
+        }
+        else {
+            CurrentWep.transform.localPosition = Vector3.Lerp(CurrentWep.transform.localPosition, originalPos, Time.deltaTime * AdsSpeed);
+            
+        }
+
+        //Firing
+        while (Input.GetMouseButton(0) && Time.time > nextFire) {
             nextFire = Time.time + FireRate;
             StartCoroutine(ShotEffect());
             Vector3 rayorigin = fpsCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
@@ -55,7 +75,7 @@ public class ShootScript : MonoBehaviour
                 LaserLine.SetPosition(1, rayorigin + (fpsCamera.transform.forward * Range));
             }
         }
-
+        //Weapon Swapping
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SwapWeapon(1);
@@ -97,7 +117,9 @@ public class ShootScript : MonoBehaviour
         Range = WepPrefab.GetComponent<GunStats>().Range;
         FireRate = WepPrefab.GetComponent<GunStats>().FireRate;
         Hitforce = WepPrefab.GetComponent<GunStats>().Hitforce;
-
+        originalPos = WepPrefab.GetComponent<GunStats>().originalPos;
+        aimingPos = WepPrefab.GetComponent<GunStats>().aimingPos;
+        AdsSpeed = WepPrefab.GetComponent<GunStats>().AdsSpeed;
     }
 
    

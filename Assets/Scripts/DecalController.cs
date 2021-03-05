@@ -14,6 +14,8 @@ public class DecalController : MonoBehaviour
 	private Queue<GameObject> decalsInPool;
 	private Queue<GameObject> decalsActiveInWorld;
 
+	
+
 	private void Awake()
 	{
 		InitializeDecals();
@@ -44,8 +46,8 @@ public class DecalController : MonoBehaviour
 		GameObject decal = GetNextAvailableDecal();
 		if (decal != null)
 		{
-			decal.transform.position = hit.point;
-			decal.transform.rotation = Quaternion.FromToRotation(Vector3.forward, hit.normal);
+			decal.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+			decal.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 			decal.transform.parent = hit.transform;
 			decal.SetActive(true);
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3304712364849711890}
   - component: {fileID: 5792329690402269971}
   m_Layer: 0
-  m_Name: Assault Rifle
+  m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +50,9 @@ MonoBehaviour:
   FireRate: 0.05
   Range: 25
   Hitforce: 100
+  originalPos: {x: 0, y: 0, z: 0}
+  aimingPos: {x: 0, y: 0, z: 0}
+  AdsSpeed: 100
 --- !u!1 &3050638027891601566
 GameObject:
   m_ObjectHideFlags: 0

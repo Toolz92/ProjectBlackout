@@ -1,31 +1,15 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &533648889723353145
+--- !u!1001 &3309161587102724613
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1207324823962473873, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2780799933522186664, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_Name
-      value: Assault Rifle Variant 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3050638027891601567, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 3050638027891601567, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 3050638027891601567, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.03
+      value: Assault Rifle Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3304712364849711890, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_RootOrder
@@ -33,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3304712364849711890, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 3304712364849711890, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.39
       objectReference: {fileID: 0}
     - target: {fileID: 3304712364849711890, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 3304712364849711890, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -71,9 +55,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9081243906591111405, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: AdsSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: Hitforce
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: aimingPos.y
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: originalPos.x
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: originalPos.y
+      value: -0.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: originalPos.z
+      value: 0.06
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}

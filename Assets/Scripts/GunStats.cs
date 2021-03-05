@@ -8,6 +8,13 @@ public class GunStats : MonoBehaviour
     public float FireRate = 0.05f;
     public float Range = 50f;
     public float Hitforce = 100f;
-    
-    
+    public Vector3 originalPos;
+    public Vector3 aimingPos;
+    public float AdsSpeed = 100;
+
+
+    public void Start()
+    {
+        //originalPos = transform.position;
+    }
 }

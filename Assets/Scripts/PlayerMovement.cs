@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
-
+    public float Xrotation = 0;
+    
     [HideInInspector]
     public bool canMove = true;
 
@@ -64,10 +64,24 @@ public class PlayerMovement : MonoBehaviour
         // Player and Camera rotation
         if (canMove)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            //Old method
+            /* Yrotation += Input.GetAxis("Mouse X") * lookSpeed;
+             Xrotation -= Input.GetAxis("Mouse Y") * lookSpeed;
+
+
+             Xrotation = Mathf.Clamp(Xrotation, -90, 90);
+
+             currentX = Mathf.SmoothDamp(currentX, Xrotation,ref XrotationV, lookSmoothDamp);
+             currentY = Mathf.SmoothDamp(currentY, Yrotation, ref YrotationV, lookSmoothDamp);
+             transform.rotation = Quaternion.Euler(currentX, currentY, 0);
+            */
+
+
+            Xrotation += -Input.GetAxis("Mouse Y") * lookSpeed;
+            Xrotation = Mathf.Clamp(Xrotation, -lookXLimit, lookXLimit);
+            playerCamera.transform.localRotation = Quaternion.Euler(Xrotation, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            
         }
     }
 }
