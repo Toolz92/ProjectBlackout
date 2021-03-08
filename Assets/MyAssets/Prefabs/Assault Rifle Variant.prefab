@@ -68,6 +68,10 @@ PrefabInstance:
       value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: CurAmmoCount
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: originalPos.x
       value: 0.22
       objectReference: {fileID: 0}

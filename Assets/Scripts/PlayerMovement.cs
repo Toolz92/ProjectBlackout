@@ -48,7 +48,16 @@ public class PlayerMovement : MonoBehaviour
         {
             moveDirection.y = movementDirectionY;
         }
-
+        //Crouching
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            GetComponent<CharacterController>().height = 1f;
+            this.transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        }
+        else {
+            GetComponent<CharacterController>().height = 2f;
+            this.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        }
 
         // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
         // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied

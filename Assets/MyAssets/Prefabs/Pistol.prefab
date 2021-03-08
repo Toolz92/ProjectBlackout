@@ -75,6 +75,18 @@ PrefabInstance:
       propertyPath: aimingPos.y
       value: -0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: reloadSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: CurAmmoCount
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792329690402269971, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: MaxAmmocount
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 9081243906591111405, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_IsActive
       value: 0
