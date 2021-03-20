@@ -12,10 +12,37 @@ public class PlayerMovement : MonoBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
+    public Vector3 curPos;
+
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     public float Xrotation = 0;
-    
+
+    //vaulting Vars
+    private bool isVaulting = false;
+    private Vector3 vaultStart;
+    private Vector3 vaultEnd;
+    private float vaultSpeed = 5f;
+    private float vaultLength;
+    private float vaultLenthFraction;
+    private float vaultStartTime;
+
+    //Dodgeroll Vars
+    private float rollDist = 2; //Expected Roll Distance
+    private float tempRollDist = 2; //Actual Roll Distance
+    private float minRollDist = 0.6f;
+    private float rollSpeed = 10;
+    private bool isRolling = false;
+    private Vector3 rollStart;
+    public Vector3 rollEnd;
+    private float rollLengthFraction;
+    private float rollStartTime;
+    private KeyCode[] MovementKeys = new KeyCode[] { KeyCode.W, KeyCode.A, KeyCode.S, KeyCode.D };
+    private KeyCode lastkeyPressed;
+    private float doubleTapTimer = 0.25f;
+    private float doubleTapStartTime;
+
+
     [HideInInspector]
     public bool canMove = true;
 
@@ -26,10 +53,16 @@ public class PlayerMovement : MonoBehaviour
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        //Vaulting init
+        
+       
+        
     }
 
     void Update()
     {
+        curPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -40,14 +73,49 @@ public class PlayerMovement : MonoBehaviour
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
+        //Jumping
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpSpeed;
-        }
-        else
+        }else
         {
-            moveDirection.y = movementDirectionY;
+            if (!isVaulting)
+            {
+                moveDirection.y = movementDirectionY;
+            }
+
         }
+        
+        //Vaulting    
+        if (Input.GetButton("Jump") && canMove)
+        {
+            VaultCheck();
+            Debug.Log("Attempted to vault");
+        }
+        //Rolling, detects if any movement key is double tapped
+        if (Input.anyKey) {
+            foreach (KeyCode key in MovementKeys)
+            {
+                if (Input.GetKeyDown(key))
+                {
+                    if (key == lastkeyPressed && ((Time.time - doubleTapStartTime) < doubleTapTimer ))
+                    {
+                        Debug.Log("DoubleTapped: " + key.ToString());
+                        RollCheck(key.ToString());
+                        lastkeyPressed = KeyCode.None;
+                    }
+                    else {
+                        lastkeyPressed = key;
+                        doubleTapStartTime = Time.time;
+                    }
+                    
+                }
+            }
+        }
+
+        
+
+
         //Crouching
         if (Input.GetKey(KeyCode.LeftControl))
         {
@@ -84,13 +152,115 @@ public class PlayerMovement : MonoBehaviour
              currentY = Mathf.SmoothDamp(currentY, Yrotation, ref YrotationV, lookSmoothDamp);
              transform.rotation = Quaternion.Euler(currentX, currentY, 0);
             */
-
-
             Xrotation += -Input.GetAxis("Mouse Y") * lookSpeed;
             Xrotation = Mathf.Clamp(Xrotation, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(Xrotation, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
             
         }
+        if (isVaulting)
+        {
+            float disCovered = (Time.time - vaultStartTime) * vaultSpeed;
+            vaultLenthFraction = disCovered / vaultLength;
+
+            Vector3 targetPos = Vector3.Lerp(vaultStart, vaultEnd, vaultLenthFraction);
+            transform.position = targetPos;
+            if (transform.position == vaultEnd)
+            {
+                isVaulting = false;
+            }
+
+        }
+
+
+        else if (isRolling) {
+            float disCovered = (Time.time - rollStartTime) * rollSpeed;
+            rollLengthFraction = disCovered / rollDist;
+            Vector3 targetPos = Vector3.Lerp(rollStart, rollEnd, rollLengthFraction);
+            transform.position = targetPos;
+
+            if (transform.position == rollEnd) {
+                playerCamera.transform.localPosition = new Vector3(0, 0, 0);
+                isRolling = false;
+            }
+        }
+
+        
+    }
+    private void VaultCheck() {
+        RaycastHit hit;
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
+        Vector3 direction = transform.forward;
+        float dis = 1;
+        Debug.DrawRay(origin, direction * dis);
+        if (Physics.Raycast(origin, direction, out hit, dis)) { //detect if facing a wall
+            Vector3 origin2 = origin;
+            origin2.y += 0.5f;
+            Debug.DrawRay(origin2, direction * dis);
+            if (Physics.Raycast(origin2, direction, out hit, dis)) // detecting if can see over wall
+            {
+                //Cant see over wall, therefore wont vault
+            }
+            else {
+                Vector3 origin3 = origin2 + (direction * dis); 
+                Debug.DrawRay(origin3, -Vector3.up * origin2.y);
+                if (Physics.Raycast(origin3, -Vector3.up, out hit, origin2.y)) { //finding new ground point to vault to
+                    //canMove = false;
+                    vaultStart = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                    vaultEnd =  new Vector3(hit.point.x, hit.point.y + 1f, hit.point.z);
+                    vaultLength = Vector3.Distance(vaultStart, vaultEnd);
+                    vaultStartTime = Time.time;
+                    isVaulting = true;
+                    
+                }
+            }
+        }
+        
+         
+    }
+
+    private void RollCheck(string RollDir) {
+        RaycastHit hit;
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+        Vector3 direction = Vector3.forward;
+        switch (RollDir) {
+            case ("W"): //Forward
+                direction = transform.forward;
+                break;
+            case ("S"): //Back
+                direction = -transform.forward;
+                break;
+            case ("A"): //Left
+                direction = -transform.right;
+                break;
+            case ("D"): //Right
+                direction = transform.right;
+                break;
+            default:
+                Debug.Log("Invalid input in RollCheck SwitchStatment");
+                break;
+        }
+        Debug.DrawRay(origin, direction * rollDist);
+        if (Physics.Raycast(origin, direction, out hit, rollDist))
+        {
+            tempRollDist = hit.distance - 0.1f;
+        }
+        else {
+            tempRollDist = rollDist;
+        }
+        if (tempRollDist <= minRollDist) {
+            Debug.Log("Roll Failed. Too Short");
+            return;
+        }
+        rollStart = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        rollEnd = rollStart + (direction * tempRollDist);
+        rollStartTime = Time.time;
+        isRolling = true;
+        playerCamera.transform.localPosition = new Vector3(0, -0.5f, 0);
+
+
+
     }
 }
+    
+

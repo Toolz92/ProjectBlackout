@@ -31,7 +31,7 @@ public class ShootScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AmmoCountContainer = GameObject.Find("Ammo Counter Container");
+        AmmoCountContainer = GameObject.Find("AmmoDisplayContainer");
         allWeps = GameObject.FindGameObjectsWithTag("Weapon");
         foreach (GameObject weps in allWeps) {
             weps.SetActive(false);
@@ -134,7 +134,7 @@ public class ShootScript : MonoBehaviour
                 GetWepStats(CurrentWep);
                 break;
             default:
-                Debug.Log("Switch Statment Failed");
+                Debug.Log("WeaponSwap Switch Statment Failed");
                 break;
         }
         startpoint = GameObject.Find("FirePoint");
