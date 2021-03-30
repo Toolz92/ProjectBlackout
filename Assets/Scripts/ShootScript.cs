@@ -77,6 +77,13 @@ public class ShootScript : MonoBehaviour
                     hit.rigidbody.AddForce(ray.normalized * Hitforce);
                 }
                 GetComponent<DecalController>().SpawnDecal(hit);
+                Debug.Log("Hit " + hit.collider.name + " " + hit.collider.tag);
+                if (hit.collider.tag == "Enemy") {
+                    Debug.Log(hit.collider.name + " took " + GunDamage + " damage.");
+                    hit.collider.gameObject.GetComponentInParent<HealthScript>().TakeDamage(GunDamage);
+                    
+                }
+                
             }
             else {
                 LaserLine.SetPosition(1, rayorigin + (fpsCamera.transform.forward * Range));
@@ -93,6 +100,7 @@ public class ShootScript : MonoBehaviour
             SwapWeapon(2);
         }
 
+        //Reloading
         if (Input.GetKeyDown(KeyCode.R) && (CurAmmocount != MaxAmmocount)) {
             StartCoroutine(ReloadEffect());
             

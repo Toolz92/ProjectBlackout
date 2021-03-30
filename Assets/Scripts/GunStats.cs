@@ -15,8 +15,5 @@ public class GunStats : MonoBehaviour
     public int CurAmmoCount = 36;
     public float reloadSpeed = 1;
 
-    public void Start()
-    {
-        //originalPos = transform.position;
-    }
+    
 }
