@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HealthScript : MonoBehaviour
 {
-
+    public float currentArmor;
+    public float maxArmor = 30f;
     public float currentHealth;
     public float maxHealth = 100f;
     public float regenAmount = 3f;
@@ -16,6 +17,7 @@ public class HealthScript : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        currentArmor = maxArmor;
     }
 
     // Update is called once per frame
@@ -28,13 +30,25 @@ public class HealthScript : MonoBehaviour
             CancelInvoke("Regeneration");
         }
         //Damage Testing Code
-        if (Input.GetKeyDown(KeyCode.E)) {
-            TakeDamage(50);
-        }
+        //if (Input.GetKeyDown(KeyCode.E)) {
+        //    TakeDamage(50);
+        //}
     }
 
     public void TakeDamage(float Damage) {
-        currentHealth -= Damage;
+
+        for (int i = 0; i < Damage; i++) {
+            if (currentArmor > 0)
+            {
+                currentArmor -= 1;
+            }
+            else
+            {
+                currentHealth -= 1;
+            }
+        }
+        
+        
         CancelInvoke("Regeneration");
         InvokeRepeating("Regeneration", regenDelay, regenSpeed);
         if (currentHealth <= 0 && (this.tag != "Player")) {
@@ -44,5 +58,9 @@ public class HealthScript : MonoBehaviour
 
     public void Regeneration() {
         currentHealth += regenAmount;
+    }
+
+    public void Armorrefill() {
+        currentArmor = maxArmor;
     }
 }

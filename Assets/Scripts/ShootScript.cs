@@ -28,6 +28,10 @@ public class ShootScript : MonoBehaviour
 
     public bool canFire = true;
 
+    public GameObject grenadePrefab;
+    private GameObject grenadeStartPoint;
+    public float grenadeThrowForce = 700;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,14 +48,17 @@ public class ShootScript : MonoBehaviour
         
 
         startpoint = GameObject.Find("FirePoint");
-
+        grenadeStartPoint = GameObject.Find("GrenadeStartPoint");
         CurAmmocount = MaxAmmocount;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.E)) {
+            GameObject proj = Instantiate(grenadePrefab, grenadeStartPoint.transform.position, Quaternion.identity);
+            proj.gameObject.GetComponent<Rigidbody>().AddForce(grenadeStartPoint.transform.forward * grenadeThrowForce);
+        }
         //ADS
         if (Input.GetMouseButton(1) && canFire)
         {
