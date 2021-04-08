@@ -11,6 +11,7 @@ public class HealthScript : MonoBehaviour
     public float regenAmount = 3f;
     public float regenSpeed = 1f;
     public float regenDelay = 3f;
+    public GameObject HealthUI;
     
 
     // Start is called before the first frame update
@@ -18,6 +19,9 @@ public class HealthScript : MonoBehaviour
     {
         currentHealth = maxHealth;
         currentArmor = maxArmor;
+        if (this.tag == "Player") {
+            HealthUI = GameObject.Find("HealthDisplayContainer");
+        }
     }
 
     // Update is called once per frame
@@ -54,13 +58,23 @@ public class HealthScript : MonoBehaviour
         if (currentHealth <= 0 && (this.tag != "Player")) {
             this.gameObject.SetActive(false);
         }
+        PlayerUpdateHealth();
     }
 
     public void Regeneration() {
         currentHealth += regenAmount;
+        PlayerUpdateHealth();
     }
 
     public void Armorrefill() {
         currentArmor = maxArmor;
+        PlayerUpdateHealth();
+    }
+
+    public void PlayerUpdateHealth() {
+        if (this.tag == "Player") {
+            HealthUI.GetComponent<HealthUpdater>().UpdateHealth(currentHealth, currentArmor);
+        }
+        
     }
 }

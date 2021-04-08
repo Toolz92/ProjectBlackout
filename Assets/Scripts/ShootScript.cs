@@ -103,8 +103,12 @@ public class ShootScript : MonoBehaviour
         {
             SwapWeapon(1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
             SwapWeapon(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            SwapWeapon(3);
         }
 
         //Reloading
@@ -137,14 +141,23 @@ public class ShootScript : MonoBehaviour
         CurrentWep.GetComponent<GunStats>().CurAmmoCount = CurAmmocount;
         switch (WepNumber) {
             case 1:
+                Debug.Log("Swapped To AssultRifle");
                 CurrentWep.SetActive(false);
                 CurrentWep = allWeps[0];
                 CurrentWep.SetActive(true);
                 GetWepStats(CurrentWep);
                 break;
             case 2:
+                Debug.Log("Swapped To Pistol");
                 CurrentWep.SetActive(false);
                 CurrentWep = allWeps[1];
+                CurrentWep.SetActive(true);
+                GetWepStats(CurrentWep);
+                break;
+            case 3:
+                Debug.Log("Swapped To Machinegun");
+                CurrentWep.SetActive(false);
+                CurrentWep = allWeps[2];
                 CurrentWep.SetActive(true);
                 GetWepStats(CurrentWep);
                 break;
