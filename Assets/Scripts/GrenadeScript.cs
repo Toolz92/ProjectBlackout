@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//Handles behavoir of the grenade once instantiated, spawning of grenades is handled by ShootScript
 public class GrenadeScript : MonoBehaviour
 {
     public float fuseTimer = 3;

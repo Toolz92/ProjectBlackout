@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+//Handles the placement of bullethole decals
 public class DecalController : MonoBehaviour
 {
 	[SerializeField]

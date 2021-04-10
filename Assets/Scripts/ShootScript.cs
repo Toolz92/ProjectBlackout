@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//The main script that handles all the shooting and gun behaviors.
 public class ShootScript : MonoBehaviour
 {
     public GameObject Player;
@@ -55,6 +56,7 @@ public class ShootScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Throw Grenade
         if (Input.GetKeyDown(KeyCode.E)) {
             GameObject proj = Instantiate(grenadePrefab, grenadeStartPoint.transform.position, Quaternion.identity);
             proj.gameObject.GetComponent<Rigidbody>().AddForce(grenadeStartPoint.transform.forward * grenadeThrowForce);
@@ -118,8 +120,8 @@ public class ShootScript : MonoBehaviour
         }
 
     }
-
-    private IEnumerator ShotEffect() {
+    
+    private IEnumerator ShotEffect() { //Draws the line between the gun barrel and where it hit
         LaserLine.enabled = true;
         yield return ShotDuration;
         LaserLine.enabled = false;
@@ -167,7 +169,7 @@ public class ShootScript : MonoBehaviour
         }
         startpoint = GameObject.Find("FirePoint");
     }
-    private void GetWepStats(GameObject WepPrefab) {
+    private void GetWepStats(GameObject WepPrefab) { //Updates the stats of ShootScript to those of currently equiped wepeon, if a new stat is added to GunStats.cs this function must be updated 
        GunDamage = WepPrefab.GetComponent<GunStats>().GunDamage;
         Range = WepPrefab.GetComponent<GunStats>().Range;
         FireRate = WepPrefab.GetComponent<GunStats>().FireRate;

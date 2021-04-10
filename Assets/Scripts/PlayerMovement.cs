@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This script handles all aspect of teh players movement
+//Currently: Running
+//           Sprinting   
+//           Jumping
+//           Crouching   
+//           Dodging   
+//           Vaulting
+//
+//
+
 public class PlayerMovement : MonoBehaviour
 {
    public float walkingSpeed = 7.5f;
@@ -12,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public float lookSpeed = 2.0f;
     public float lookXLimit = 45.0f;
 
-    public Vector3 curPos;
+    //public Vector3 curPos; 
 
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
@@ -44,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     [HideInInspector]
-    public bool canMove = true;
+    public bool canMove = true; //If any action is taking place this should be false to prevent the player from moving durring animations or Lerps
 
     void Start()
     {
@@ -53,16 +63,11 @@ public class PlayerMovement : MonoBehaviour
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        //Vaulting init
-        
-       
-        
     }
 
     void Update()
     {
-        curPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //curPos = new Vector3(transform.position.x, transform.position.y, transform.position.z); //Players current Position for Testing purposes
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -158,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
             
         }
-        if (isVaulting)
+        if (isVaulting) //Moving the player along a lerp determined by VaultCheck()
         {
             float disCovered = (Time.time - vaultStartTime) * vaultSpeed;
             vaultLenthFraction = disCovered / vaultLength;
@@ -173,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        else if (isRolling) {
+        else if (isRolling) { //Moving the player along a lerp determined by RollCheck() 
             float disCovered = (Time.time - rollStartTime) * rollSpeed;
             rollLengthFraction = disCovered / rollDist;
             Vector3 targetPos = Vector3.Lerp(rollStart, rollEnd, rollLengthFraction);
@@ -187,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
 
         
     }
-    private void VaultCheck() {
+    private void VaultCheck() { //Checks to see if a vault is possible, ei. facing a wall and the wall is not to high to vault
         RaycastHit hit;
         Vector3 origin = new Vector3(transform.position.x, transform.position.y - 0.2f, transform.position.z);
         Vector3 direction = transform.forward;
@@ -206,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.DrawRay(origin3, -Vector3.up * origin2.y);
                 if (Physics.Raycast(origin3, -Vector3.up, out hit, origin2.y)) { //finding new ground point to vault to
                     //canMove = false;
-                    vaultStart = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+                    vaultStart = new Vector3(transform.position.x, transform.position.y, transform.position.z);//Init the start and end positions for the lerp
                     vaultEnd =  new Vector3(hit.point.x, hit.point.y + 1f, hit.point.z);
                     vaultLength = Vector3.Distance(vaultStart, vaultEnd);
                     vaultStartTime = Time.time;
@@ -219,7 +224,7 @@ public class PlayerMovement : MonoBehaviour
          
     }
 
-    private void RollCheck(string RollDir) {
+    private void RollCheck(string RollDir) { //Check to make sure a roll is possible, ei. not to close to something to start a roll and check how far the roll can travel
         RaycastHit hit;
         Vector3 origin = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
         Vector3 direction = Vector3.forward;

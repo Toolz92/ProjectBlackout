@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//This scripted handles anything that has health, with Tag based conditions for if the gameobject is a player or an ememy
+//Make sure any gameobject this script is attatched to has either a "Player" or "Enemy" Tag
 public class HealthScript : MonoBehaviour
 {
     public float currentArmor;
