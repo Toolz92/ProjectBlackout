@@ -33,6 +33,9 @@ public class ShootScript : MonoBehaviour
     private GameObject grenadeStartPoint;
     public float grenadeThrowForce = 700;
 
+    //Inventory vars 
+    public bool[] pickedUpWeps;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +49,10 @@ public class ShootScript : MonoBehaviour
         fpsCamera = GetComponentInChildren<Camera>();
         CurrentWep = allWeps[0];
         GetWepStats(CurrentWep);
+
+        //inventory setup, only first weapon is kept, all others must be picked up
+        pickedUpWeps = new bool[allWeps.Length];
+        pickedUpWeps[0] = true;
         
 
         startpoint = GameObject.Find("FirePoint");
@@ -103,14 +110,23 @@ public class ShootScript : MonoBehaviour
         //Weapon Swapping
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            SwapWeapon(1);
+            if (pickedUpWeps[0]) {
+                SwapWeapon(0);
+            }
+            
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            SwapWeapon(2);
+            if (pickedUpWeps[1])
+            {
+                SwapWeapon(1);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3)) {
-            SwapWeapon(3);
+            if (pickedUpWeps[2])
+            {
+                SwapWeapon(2);
+            }
         }
 
         //Reloading
@@ -142,21 +158,21 @@ public class ShootScript : MonoBehaviour
     private void SwapWeapon(int WepNumber) {
         CurrentWep.GetComponent<GunStats>().CurAmmoCount = CurAmmocount;
         switch (WepNumber) {
-            case 1:
+            case 0:
                 Debug.Log("Swapped To AssultRifle");
                 CurrentWep.SetActive(false);
                 CurrentWep = allWeps[0];
                 CurrentWep.SetActive(true);
                 GetWepStats(CurrentWep);
                 break;
-            case 2:
+            case 1:
                 Debug.Log("Swapped To Pistol");
                 CurrentWep.SetActive(false);
                 CurrentWep = allWeps[1];
                 CurrentWep.SetActive(true);
                 GetWepStats(CurrentWep);
                 break;
-            case 3:
+            case 2:
                 Debug.Log("Swapped To Machinegun");
                 CurrentWep.SetActive(false);
                 CurrentWep = allWeps[2];
@@ -183,5 +199,12 @@ public class ShootScript : MonoBehaviour
         reloadSpeed = WepPrefab.GetComponent<GunStats>().reloadSpeed;
     }
 
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WeaponPickup")) {
+            pickedUpWeps[other.GetComponent<WeaponPickupScript>().weaponIndex] = true;
+        }
+    }
+
 }
