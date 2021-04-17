@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - WeaponPickup
   - KeyItem
+  - Door
   layers:
   - Default
   - TransparentFX
