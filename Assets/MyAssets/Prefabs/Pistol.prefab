@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 304672643539168647, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
+      propertyPath: message
+      value: You picked up the Pistol
+      objectReference: {fileID: 0}
     - target: {fileID: 1207324823962473873, guid: c36d3cbf72e9d38418d620d1f2461a0e, type: 3}
       propertyPath: m_IsActive
       value: 1

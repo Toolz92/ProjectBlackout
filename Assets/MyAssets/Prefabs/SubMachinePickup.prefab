@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3399600557168271815, guid: f6d06a84b589e4048a4b9945d41a3e82, type: 3}
+      propertyPath: message
+      value: You picked up the Submachine Gun
+      objectReference: {fileID: 0}
     - target: {fileID: 3592561718512823981, guid: f6d06a84b589e4048a4b9945d41a3e82, type: 3}
       propertyPath: weaponIndex
       value: 2
